@@ -1,6 +1,6 @@
 package testvalues
 
-import static testvalues.StringValueGenerator.*
+import static testvalues.StringValueGenerator.text
 
 abstract class Parameter {
 
@@ -12,7 +12,7 @@ abstract class Parameter {
 
     Boolean optional
 
-    void setOptional(Boolean optional){
+    void setOptional(Boolean optional) {
         this.optional = optional
         if (optional) {
             validValues << null
@@ -45,14 +45,14 @@ class StringParameter extends Parameter {
 
     void setMaxLength(Integer maxLength) {
         this.maxLength = maxLength
-        validValues     << text(length: maxLength)
-        invalidValues   << text(length: maxLength + 1)
+        validValues << text(length: maxLength)
+        invalidValues << text(length: maxLength + 1)
     }
 
     void setMinLength(Integer minLength) {
         this.minLength = minLength
-        validValues     << text(length: minLength)
-        invalidValues   << text(length: minLength - 1)
+        validValues << text(length: minLength)
+        invalidValues << text(length: minLength - 1)
     }
 
 }

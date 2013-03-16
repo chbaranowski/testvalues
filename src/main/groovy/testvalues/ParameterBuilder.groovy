@@ -18,7 +18,7 @@ class ParameterBuilder {
 
     def getValidValues() {
         def validValues = []
-        def maxValidValues = ((model.params*.validValues)*.size()).max() -1
+        def maxValidValues = ((model.params*.validValues)*.size()).max() - 1
         (0..maxValidValues).each { i ->
             def testSet = [:]
             model.params.each { param ->
@@ -35,11 +35,11 @@ class ParameterBuilder {
 
     def getInvalidValues() {
         def invalidValues = []
-        model.params.each {  invalidParam ->
+        model.params.each { invalidParam ->
             invalidParam.invalidValues.each { invalidValue ->
                 def invalidDataSet = [:]
-                model.params.findAll {it != invalidParam}.each { validParam ->
-                   invalidDataSet[validParam.name] = validParam.validValues[0]
+                model.params.findAll { it != invalidParam }.each { validParam ->
+                    invalidDataSet[validParam.name] = validParam.validValues[0]
                 }
                 invalidDataSet[invalidParam.name] = invalidValue
                 invalidValues.add(invalidDataSet)

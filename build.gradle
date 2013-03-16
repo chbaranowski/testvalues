@@ -3,10 +3,10 @@ apply plugin: "eclipse"
 apply plugin: "idea"
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	groovy('org.codehaus.groovy:groovy-all:2.0.6')
-	testCompile('org.spockframework:spock-core:0.7-groovy-2.0')
+    groovy('org.codehaus.groovy:groovy-all:2.0.6')
+    testCompile('org.spockframework:spock-core:0.7-groovy-2.0')
 }
