@@ -4,11 +4,11 @@ class StringValueGenerator {
 
     static String text(Map args) {
         def length = args.length
-        def text = ""
-        (0..length).each {
+        def text = new StringBuilder()
+        for (int i = 0; i < length; i++) {
             text << "Ä"
         }
-        text
+        text.toString()
     }
 
 }

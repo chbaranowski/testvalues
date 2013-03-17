@@ -2,6 +2,17 @@ package testvalues
 
 class TestDataModel {
 
-    List<Parameter> params = []
+   Parameters params = new Parameters()
+
+   List constraints = []
+
+}
+
+class Parameters {
+
+    @Delegate
+    List<Parameter> parameters = []
+
+    Map helpers = [:]
 
 }

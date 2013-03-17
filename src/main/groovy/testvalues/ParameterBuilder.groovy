@@ -16,18 +16,23 @@ class ParameterBuilder {
         closure()
     }
 
+    def constraint(Closure closure) {
+        model.constraints << closure
+    }
+
     def getValidValues() {
         def validValues = []
         def maxValidValues = ((model.params*.validValues)*.size()).max() - 1
         (0..maxValidValues).each { i ->
             def testSet = [:]
             model.params.each { param ->
-                if (param.validValues.size() > i) {
+                if (i < param.validValues.size()) {
                     testSet[param.name] = param.validValues[i]
                 } else {
                     testSet[param.name] = param.validValues[0]
                 }
             }
+
             validValues.add(testSet)
         }
         validValues
@@ -42,22 +47,50 @@ class ParameterBuilder {
                     invalidDataSet[validParam.name] = validParam.validValues[0]
                 }
                 invalidDataSet[invalidParam.name] = invalidValue
+                model.params.helpers.each { helper ->
+                    def model = [name: invalidParam.name, value: invalidValue]
+                    Closure helperClosure = helper.value
+                    helperClosure.resolveStrategy = Closure.DELEGATE_FIRST
+                    helperClosure.delegate = model
+                    invalidDataSet[helper.key] = helperClosure()
+                }
                 invalidValues.add(invalidDataSet)
             }
         }
         invalidValues
     }
+
+    def getParams() {
+        new ParamsFinder(model: model.params)
+    }
+
+}
+
+
+class ParamsFinder {
+
+    Parameters model
+
+    Object getProperty(String name){
+       model.parameters.find{it.name == name}
+    }
 }
 
 class ParamsBuilder {
 
-    List<Parameter> model
+    Parameters model
 
-    public Object invokeMethod(String name, Object args) {
-        param(name, (Map) args[0], (Closure) args[1])
+    public Object invokeMethod(String name, args) {
+        if (args.length > 1 && args[0] instanceof Map && args[1] instanceof Closure) {
+            param(name, (Map) args[0], (Closure) args[1])
+        } else if (args.length == 1 && args[0] instanceof Closure) {
+            helper(name, (Closure) args[0])
+        } else {
+            throw new RuntimeException("No valid parameter definition with name $name and args $args")
+        }
     }
 
-    def param(Object name, Map attributes, Closure closure) {
+    def param(String name, Map attributes, Closure closure) {
         def typeName = attributes.type
         def type = ParameterFactory.getInstance().types[typeName]
         Parameter parameterModel = type.newInstance()
@@ -67,5 +100,10 @@ class ParamsBuilder {
         closure()
         model.add(parameterModel)
     }
+
+    def helper(String name, Closure closure) {
+        model.helpers[name] = closure
+    }
+
 }
 

@@ -12,13 +12,40 @@ abstract class Parameter {
 
     Boolean optional
 
-    void setOptional(Boolean optional) {
-        this.optional = optional
-        if (optional) {
-            validValues << null
-        } else {
-            invalidValues << null
+    boolean definedValidValues = false
+
+    boolean definedInvalidValues = false
+
+    void setValidValues(List validValues) {
+        definedValidValues = true
+        this.validValues = validValues
+    }
+
+    List getValidValues() {
+        List values = []
+        if (definedValidValues) {
+            values += validValues
         }
+        if (optional) {
+            values << null
+        }
+        values
+    }
+
+    void setInvalidValues(List invalidValues) {
+        definedInvalidValues = true
+        this.invalidValues = invalidValues
+    }
+
+    List getInvalidValues() {
+        List values = []
+        if (definedInvalidValues) {
+            values += invalidValues
+        }
+        if (optional != null && !optional) {
+            values << null
+        }
+        values
     }
 
 }
@@ -31,30 +58,37 @@ class StringParameter extends Parameter {
 
     Boolean empty
 
-    def notEmpty() {
-        this.empty = false
-        invalidValues << ""
-        invalidValues << "   "
+    List getValidValues() {
+        List values = super.validValues
+        if (empty) {
+            values << ""
+            values << "   "
+        }
+        if (!definedValidValues) {
+            if (minLength) {
+                values << text(length: minLength)
+            }
+            if (maxLength) {
+                values << text(length: maxLength)
+            }
+        }
+        values
     }
 
-    def empty() {
-        this.empty = true
-        validValues << ""
-        validValues << "   "
+    List getInvalidValues() {
+        List values = super.invalidValues
+        if (empty != null && !empty) {
+            values << ""
+            values << "   "
+        }
+        if (minLength) {
+            values << text(length: minLength - 1)
+        }
+        if (maxLength) {
+            values << text(length: maxLength + 1)
+        }
+        values
     }
-
-    void setMaxLength(Integer maxLength) {
-        this.maxLength = maxLength
-        validValues << text(length: maxLength)
-        invalidValues << text(length: maxLength + 1)
-    }
-
-    void setMinLength(Integer minLength) {
-        this.minLength = minLength
-        validValues << text(length: minLength)
-        invalidValues << text(length: minLength - 1)
-    }
-
 }
 
 @Singleton
