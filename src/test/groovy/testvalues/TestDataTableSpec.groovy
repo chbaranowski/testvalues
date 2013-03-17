@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 class TestDataTableSpec extends Specification {
 
-    def testData = new ParameterBuilder()
+    def testData = new TestDataBuilder()
 
     def getValidValues() {
         testData.validValues

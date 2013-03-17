@@ -1,14 +1,14 @@
 package testvalues
 
-class TestDataModel {
+class TestData {
 
-   Parameters params = new Parameters()
+   Params params = new Params()
 
    List constraints = []
 
 }
 
-class Parameters {
+class Params {
 
     @Delegate
     List<Parameter> parameters = []

@@ -5,7 +5,7 @@ import spock.lang.Specification
 
 class HelperParamSpec extends Specification {
 
-    def testData = new ParameterBuilder()
+    def testData = new TestDataBuilder()
 
     def getInvalidValues() {
         testData.invalidValues

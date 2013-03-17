@@ -1,10 +1,11 @@
 package testvalues
 
-class ParameterBuilder {
+class TestDataBuilder {
 
-    TestDataModel model = new TestDataModel()
+    TestData model
 
     def call(Closure closure) {
+        model = new TestData()
         closure.resolveStrategy = Closure.DELEGATE_FIRST
         closure.delegate = this
         closure()
@@ -69,7 +70,7 @@ class ParameterBuilder {
 
 class ParamsFinder {
 
-    Parameters model
+    Params model
 
     Object getProperty(String name){
        model.parameters.find{it.name == name}
@@ -78,7 +79,7 @@ class ParamsFinder {
 
 class ParamsBuilder {
 
-    Parameters model
+    Params model
 
     public Object invokeMethod(String name, args) {
         if (args.length > 1 && args[0] instanceof Map && args[1] instanceof Closure) {

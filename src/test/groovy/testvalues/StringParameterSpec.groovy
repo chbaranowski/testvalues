@@ -1,12 +1,12 @@
 package testvalues
 
-import spock.lang.Specification;
+import spock.lang.Specification
+import static testvalues.StringParameter.*
 
-import static testvalues.StringValueGenerator.*
 
 class StringParameterSpec extends Specification {
 
-    def testData = new ParameterBuilder()
+    def testData = new TestDataBuilder()
 
     def getValidValues() {
         testData.validValues

@@ -1,7 +1,5 @@
 package testvalues
 
-import static testvalues.StringValueGenerator.text
-
 abstract class Parameter {
 
     String name
@@ -88,6 +86,15 @@ class StringParameter extends Parameter {
             values << text(length: maxLength + 1)
         }
         values
+    }
+
+    static String text(Map args) {
+        def length = args.length
+        def text = new StringBuilder()
+        for (int i = 0; i < length; i++) {
+            text << "Ä"
+        }
+        text.toString()
     }
 }
 

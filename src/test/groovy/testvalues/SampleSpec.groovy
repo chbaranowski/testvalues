@@ -38,7 +38,7 @@ class SampleSpec extends Specification {
     }
 
     def create(Closure testDataSpec) {
-        ParameterBuilder builder = new ParameterBuilder()
+        TestDataBuilder builder = new TestDataBuilder()
         builder.call(testDataSpec)
         builder
     }
